@@ -49,7 +49,8 @@ Certifique-se de ter o **Docker** e o **Docker Compose** instalados na sua máqu
 ### 2. Configuração do Ambiente
 Clone o repositório e crie o arquivo de variáveis de ambiente:
 ```bash
-cp .env.example .env```
+cp .env.example .env
+```
 
 ### 3. Subir os Containers
 
