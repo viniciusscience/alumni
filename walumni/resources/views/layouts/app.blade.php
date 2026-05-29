@@ -3,75 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- O token CSRF em uma meta tag facilita o resgate via JavaScript -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
     <title>@yield('title', 'Alumni | ForgeIT')</title>
 
-    <!-- Bootstrap 5 CSS via CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <style>
-        body { display: flex; flex-direction: column; min-height: 100vh; background-color: #f8f9fa; }
-        main { flex: 1; }
+        :root {
+            --alumni-blue: #2e4e94;
+            --alumni-green: #0a8f4f;
+            --alumni-green-soft: #47a36f;
+            --alumni-red: #e02c2c;
+            --alumni-bg: #f0f2f5;
+            --alumni-surface: #ffffff;
+            --alumni-border: #e0e2e6;
+            --alumni-text: #7a818c;
+            --alumni-dark: #16213c;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, rgba(46, 78, 148, 0.12), transparent 28%),
+                radial-gradient(circle at top right, rgba(10, 143, 79, 0.12), transparent 26%),
+                linear-gradient(180deg, #f7f9fc 0%, var(--alumni-bg) 100%);
+            color: var(--alumni-dark);
+        }
+
+        .alumni-navbar {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.88);
+            border-bottom: 1px solid rgba(224, 226, 230, 0.9);
+        }
+
+        .alumni-brand {
+            gap: 0.75rem;
+        }
+
+        .alumni-brand img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+        }
+
+        .alumni-brand-text {
+            line-height: 1.05;
+        }
+
+        .alumni-brand-text strong {
+            color: var(--alumni-blue);
+        }
+
+        .alumni-brand-text span {
+            color: var(--alumni-text);
+            font-size: 0.875rem;
+        }
+
+        .alumni-main {
+            flex: 1;
+        }
+
+        .alumni-footer {
+            border-top: 1px solid rgba(224, 226, 230, 0.9);
+            background: rgba(255, 255, 255, 0.74);
+        }
+
+        .btn-alumni-primary {
+            background: var(--alumni-green);
+            border-color: var(--alumni-green);
+            color: #fff;
+        }
+
+        .btn-alumni-primary:hover,
+        .btn-alumni-primary:focus {
+            background: #087744;
+            border-color: #087744;
+            color: #fff;
+        }
+
+        .btn-alumni-ghost {
+            border-color: rgba(46, 78, 148, 0.22);
+            color: var(--alumni-blue);
+        }
+
+        .btn-alumni-ghost:hover,
+        .btn-alumni-ghost:focus {
+            background: rgba(46, 78, 148, 0.08);
+            color: var(--alumni-blue);
+        }
     </style>
+
+    @stack('styles')
 </head>
 <body>
 
-    <!-- Cabeçalho / Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-        <div class="container">
-            <a class="navbar-brand" href="/">UNIVINTE</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <nav class="navbar navbar-expand-lg alumni-navbar sticky-top">
+        <div class="container py-2">
+            <a class="navbar-brand d-flex align-items-center alumni-brand" href="{{ route('egresso.landing') }}">
+                <img src="{{ asset('assets/image/logo/logo.png') }}" alt="Logo Alumni">
+                <span class="alumni-brand-text d-flex flex-column">
+                    <strong>Alumni</strong>
+                    <span>Acompanhamento de Egressos</span>
+                </span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <!-- Exemplo de navegação tradicional do Laravel -->
-                        <a class="nav-link" href="/">Início</a>
-                    </li>
-                    <li class="nav-item">
-                        <!-- Exemplo de botão pronto para carregar conteúdo via HTMX -->
-                        <a class="nav-link" href="#" hx-get="/alunos" hx-target="#conteudo-dinamico">Alunos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" hx-get="/vagas" hx-target="#conteudo-dinamico">Vagas e Bolsas</a>
-                    </li>
-                </ul>
+                <div class="ms-auto d-flex flex-column flex-lg-row gap-2 pt-3 pt-lg-0">
+                    <a class="btn btn-alumni-ghost rounded-pill px-3" href="{{ route('egresso.painel') }}">Painel de indicadores</a>
+                    <a class="btn btn-alumni-ghost rounded-pill px-3" href="#atualizacao">Atualizar dados</a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Área de Conteúdo Principal -->
-    <main class="container" id="conteudo-dinamico">
-        <!-- A diretiva yield define onde o conteúdo das outras páginas será injetado -->
+    <main class="alumni-main" id="conteudo-dinamico">
         @yield('content')
     </main>
 
-    <!-- Rodapé -->
-    <footer class="bg-light text-center text-muted py-3 mt-4 border-top">
-        <small>&copy; {{ date('Y') }} UNIVINTE. Todos os direitos reservados.</small>
+    <footer class="alumni-footer text-center text-muted py-4 mt-4">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+            <small>&copy; {{ date('Y') }} Alumni - Acompanhamento de Egressos</small>
+            <small>Dados atualizados fortalecem empregabilidade, relacionamento institucional e indicadores MEC/Inep.</small>
+        </div>
     </footer>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- HTMX via CDN -->
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    
-    <!-- Configuração de Segurança HTMX + Laravel -->
     <script>
-        // Intercepta todas as requisições do HTMX e injeta o token CSRF do Laravel
         document.body.addEventListener('htmx:configRequest', (event) => {
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
             if (csrfToken) {
                 event.detail.headers['X-CSRF-TOKEN'] = csrfToken;
             }
         });
     </script>
 
-    <!-- Área para injeção de scripts específicos de outras páginas -->
     @stack('scripts')
 </body>
 </html>

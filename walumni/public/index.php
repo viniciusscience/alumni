@@ -11,7 +11,15 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
 }
 
 // Register the Composer autoloader...
-require __DIR__.'/../vendor/autoload.php';
+$autoload = __DIR__.'/../vendor/autoload.php';
+
+if (! file_exists($autoload)) {
+    http_response_code(500);
+
+    exit('Laravel dependencies are missing. Run composer install.');
+}
+
+require $autoload;
 
 // Bootstrap Laravel and handle the request...
 /** @var Application $app */
